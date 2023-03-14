@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "360539020679",
+    "firebase_url": "https://ftr-parcels-c2c4c-default-rtdb.firebaseio.com",
+    "project_id": "ftr-parcels-c2c4c",
+    "storage_bucket": "ftr-parcels-c2c4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360539020679:android:98b484551ab5dd29c5c722",
+        "android_client_info": {
+          "package_name": "com.ftrparcels.deliverymanapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360539020679-orf7e6nau50jma95l58dq010j1ef4k6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw3BQogABt8chTNBLn_ZaKtTTuJYJbKRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360539020679-orf7e6nau50jma95l58dq010j1ef4k6r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
