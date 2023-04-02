@@ -10,7 +10,6 @@ import '../tabPages/ratings_tab.dart';
 class MainScreen extends StatefulWidget
 {
 
-
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -43,7 +42,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           const HomeTabPage(),
           const EarningsTabPage(),
           const RatingsTabPage(),
-          ProfileTabPage(name: userModelCurrentInfo!.name, email: userModelCurrentInfo!.email,),
+          ProfileTabPage(),
 
         ],
 
