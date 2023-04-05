@@ -9,7 +9,7 @@ void main() async
   runApp(
       MyApp(
         child: MaterialApp(
-          title: 'Deliveryman App',
+          title: 'FTRP Deliveryman App',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:project_files/authentication/reset_password_screen.dart';
 import 'package:project_files/authentication/signup_screen.dart';
 import 'package:project_files/splashScreen/splash_screen.dart';
 
@@ -105,8 +106,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Image.asset("images/Logo.png"),
               ),
 
-              const SizedBox(height: 10,),
-
               const Text(
                 "Login as a Deliveryman",
                 style: TextStyle(
@@ -172,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              const SizedBox(height: 80,),
+              const SizedBox(height: 60,),
 
               ElevatedButton(
                 onPressed: () {
@@ -189,6 +188,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+
+              const SizedBox(height: 10,),
+
+              TextButton(
+                onPressed: ()
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (c)=>const ResetPasswordScreen()));
+                },
+                child: const Text(
+                  "Forgot Password?",
+                  style: TextStyle(
+                      color: Colors.white
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20,),
 
               TextButton(
                 onPressed: ()
