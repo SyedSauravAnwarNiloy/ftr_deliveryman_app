@@ -34,6 +34,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360539020679:android:cb456e89782abf47c5c722",
+        "android_client_info": {
+          "package_name": "com.ftrparcels.usersapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360539020679-orf7e6nau50jma95l58dq010j1ef4k6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw3BQogABt8chTNBLn_ZaKtTTuJYJbKRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360539020679-orf7e6nau50jma95l58dq010j1ef4k6r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

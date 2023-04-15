@@ -7,6 +7,7 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:project_files/push_notifications/push_notification_system.dart';
 
 import '../assistants/assistant_methods.dart';
 import '../global/global.dart';
@@ -231,11 +232,20 @@ class _HomeTabPageState extends State<HomeTabPage> {
     //print("This is your address = " + humanReadableAddress);
   }
 
+  readCurrentDeliverymanInformation() async
+  {
+    currentFirebaseUser = fAuth.currentUser;
+    PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
+    pushNotificationSystem.initializeCloudMessaging(context);
+    pushNotificationSystem.generateAndGetToken();
+  }
+
   @override
   void initState() {
     super.initState();
 
     checkIfLocationPermissionAllowed();
+    readCurrentDeliverymanInformation();
   }
 
   @override
