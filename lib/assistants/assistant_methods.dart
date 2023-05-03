@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_files/assistants/request_assistant.dart';
@@ -78,4 +80,41 @@ class AssistantMethods
 
     return directionDetailsInfo;
   }
+
+  static pauseLiveLocationUpdates()
+  {
+    streamSubscriptionPosition!.pause();
+    Geofire.removeLocation(currentFirebaseUser!.uid);
+  }
+
+  static resumeLiveLocationUpdates()
+  {
+    streamSubscriptionPosition!.resume();
+    Geofire.setLocation(currentFirebaseUser!.uid,
+        deliverymanCurrentPosition!.latitude,
+        deliverymanCurrentPosition!.longitude);
+  }
+/*
+  static double getTotalFee(DirectionDetailsInfo directionDetailsInfo, String courierRequestId)
+  {
+    double totalFeeAmount=0;
+
+    FirebaseDatabase.instance.ref()
+        .child("all courier requests")
+        .child(courierRequestId)
+        .once().then((snapData)
+    {
+      if(snapData.snapshot.value != null)
+      {
+        totalFeeAmount = double.parse((snapData.snapshot.value! as Map)["userFeeAmount"]);
+      }
+      else
+      {
+        Fluttertoast.showToast(msg: "Error getting parcelInfo");
+      }
+    });
+
+
+    return double.parse(totalFeeAmount.toStringAsFixed(1));
+  }*/
 }

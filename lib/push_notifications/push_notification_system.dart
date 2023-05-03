@@ -65,6 +65,8 @@ class PushNotificationSystem
           String parcelMass = (snapData.snapshot.value! as Map)["parcelInformation"]["parcel_mass"];
           String parcelVolume = (snapData.snapshot.value! as Map)["parcelInformation"]["parcel_volume"];
 
+          String? courierRequestId = snapData.snapshot.key;
+
           UserCourierRequestInformation userCourierRequestDetails = UserCourierRequestInformation();
           userCourierRequestDetails.originLatLng = LatLng(originLat, originLng);
           userCourierRequestDetails.originAddress = originAddress;
@@ -78,6 +80,8 @@ class PushNotificationSystem
           userCourierRequestDetails.parcelType = parcelType;
           userCourierRequestDetails.parcelMass = parcelMass;
           userCourierRequestDetails.parcelVolume = parcelVolume;
+
+          userCourierRequestDetails.courierRequestId = courierRequestId;
 
           showDialog(
               context: context,

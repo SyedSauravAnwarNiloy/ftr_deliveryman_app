@@ -1,4 +1,9 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:project_files/assistants/assistant_methods.dart';
+import 'package:project_files/global/global.dart';
+import 'package:project_files/mainScreens/new_trip_screen.dart';
 
 import '../models/user_courier_request_information.dart';
 
@@ -243,7 +248,7 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
                       {
                         //Accept the courier request
 
-                        Navigator.pop(context);
+                        acceptCourierRequest(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueGrey,
@@ -263,5 +268,45 @@ class _NotificationDialogBoxState extends State<NotificationDialogBox> {
         ),
       ),
     );
+  }
+
+  acceptCourierRequest(BuildContext context)
+  {
+    String getCourierRequestId="";
+    FirebaseDatabase.instance.ref()
+        .child("deliverymen")
+        .child(currentFirebaseUser!.uid)
+        .child("newCourierStatus")
+        .once().then((snap)
+    {
+      if(snap.snapshot.value != null)
+        {
+          getCourierRequestId = snap.snapshot.value.toString();
+        }
+      else
+        {
+          Fluttertoast.showToast(msg: "This Courier request does not exist.");
+        }
+
+      if(getCourierRequestId == widget.userCourierRequestDetails!.courierRequestId)
+        {
+          FirebaseDatabase.instance.ref()
+              .child("deliverymen")
+              .child(currentFirebaseUser!.uid)
+              .child("newCourierStatus")
+              .set("accepted");
+
+          AssistantMethods.pauseLiveLocationUpdates();
+
+          // Trip started now - send deliveryman to newTripScreen
+          Navigator.push(context, MaterialPageRoute(builder: (c)=>NewTripScreen(
+              userCourierRequestDetails: widget.userCourierRequestDetails,
+          )));
+        }
+      else
+        {
+          Fluttertoast.showToast(msg: "This Courier request does not exist.");
+        }
+    });
   }
 }

@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:project_files/push_notifications/push_notification_system.dart';
 
 import '../assistants/assistant_methods.dart';
+import '../assistants/black_theme_google_map.dart';
 import '../global/global.dart';
 
 class HomeTabPage extends StatefulWidget {
@@ -32,7 +33,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
     zoom: 14.4746,
   );
 
-  Position? deliverymanCurrentPosition;
+
   var geoLocator = Geolocator();
   LocationPermission? _locationPermission;
 
@@ -40,172 +41,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
   Color statusColor = Colors.grey;
   bool isDeliverymanActive = false;
 
-  blackThemeGoogleMap()
-  {
-    newGoogleMapController!.setMapStyle('''
-                    [
-                      {
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#242f3e"
-                          }
-                        ]
-                      },
-                      {
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#746855"
-                          }
-                        ]
-                      },
-                      {
-                        "elementType": "labels.text.stroke",
-                        "stylers": [
-                          {
-                            "color": "#242f3e"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "administrative.locality",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#d59563"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "poi",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#d59563"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "poi.park",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#263c3f"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "poi.park",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#6b9a76"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#38414e"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road",
-                        "elementType": "geometry.stroke",
-                        "stylers": [
-                          {
-                            "color": "#212a37"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#9ca5b3"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road.highway",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#746855"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road.highway",
-                        "elementType": "geometry.stroke",
-                        "stylers": [
-                          {
-                            "color": "#1f2835"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "road.highway",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#f3d19c"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "transit",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#2f3948"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "transit.station",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#d59563"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "water",
-                        "elementType": "geometry",
-                        "stylers": [
-                          {
-                            "color": "#17263c"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "water",
-                        "elementType": "labels.text.fill",
-                        "stylers": [
-                          {
-                            "color": "#515c6d"
-                          }
-                        ]
-                      },
-                      {
-                        "featureType": "water",
-                        "elementType": "labels.text.stroke",
-                        "stylers": [
-                          {
-                            "color": "#17263c"
-                          }
-                        ]
-                      }
-                    ]
-                ''');
-  }
 
   checkIfLocationPermissionAllowed() async
   {
@@ -235,6 +70,25 @@ class _HomeTabPageState extends State<HomeTabPage> {
   readCurrentDeliverymanInformation() async
   {
     currentFirebaseUser = fAuth.currentUser;
+
+    FirebaseDatabase.instance.ref()
+    .child("deliverymen")
+    .child(currentFirebaseUser!.uid)
+    .once()
+    .then((snap)
+    {
+      if(snap.snapshot.value != null)
+        {
+          onlineDeliverymanData.id = (snap.snapshot.value as Map)["id"];
+          onlineDeliverymanData.name = (snap.snapshot.value as Map)["name"];
+          onlineDeliverymanData.phone = (snap.snapshot.value as Map)["phone"];
+          onlineDeliverymanData.email = (snap.snapshot.value as Map)["email"];
+          onlineDeliverymanData.car_model = (snap.snapshot.value as Map)["car_details"]["car_model"];
+          onlineDeliverymanData.car_color = (snap.snapshot.value as Map)["car_details"]["car_color"];
+          onlineDeliverymanData.car_number = (snap.snapshot.value as Map)["car_details"]["car_number"];
+        }
+    });
+
     PushNotificationSystem pushNotificationSystem = PushNotificationSystem();
     pushNotificationSystem.initializeCloudMessaging(context);
     pushNotificationSystem.generateAndGetToken();
@@ -262,7 +116,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               newGoogleMapController = controller;
 
               //black theme Google Map
-              blackThemeGoogleMap();
+              blackThemeGoogleMap(newGoogleMapController);
 
               locateDriverPosition();
             },
@@ -293,7 +147,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     if(isDeliverymanActive != true) //offline
                     {
                       driverIsOnlineNow();
-                      updateDriversLocationAtRealTime();
+                      updateDeliverymenLocationAtRealTime();
 
                       setState(() {
                         statusText = "Now Online";
@@ -317,7 +171,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 22),
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(26),
                     )
@@ -361,13 +215,13 @@ class _HomeTabPageState extends State<HomeTabPage> {
     DatabaseReference ref = FirebaseDatabase.instance.ref()
         .child("deliverymen")
         .child(currentFirebaseUser!.uid)
-        .child("newParcelStatus");
+        .child("newCourierStatus");
 
     ref.set("idle"); // searching for parcel request
     ref.onValue.listen((event) { });
   }
 
-  updateDriversLocationAtRealTime()
+  updateDeliverymenLocationAtRealTime()
   {
     streamSubscriptionPosition = Geolocator.getPositionStream()
         .listen((Position position)
@@ -399,7 +253,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
     DatabaseReference? ref = FirebaseDatabase.instance.ref()
         .child("deliverymen")
         .child(currentFirebaseUser!.uid)
-        .child("newParcelStatus");
+        .child("newCourierStatus");
     ref.onDisconnect();
     ref.remove();
     ref = null;
